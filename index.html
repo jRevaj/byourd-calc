@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Byourd Investment Calculator</title>
+    <style>
+    </style>
+</head>
+<body>
+    <form id="form" action="index.html">
+        <p>Minimalna rozloha pozemku bez polyfunkcie je 23000m2</p>
+        <label for="rp">Zadajte rozlohu pozemku v m2</label>
+        <input type="number" name="rozloha-pozemku" id="rp" onchange="checkRP(this)" min="23000" required oninvalid="alert('Musite vyplnit')"><br><br>
+        <label for="stat">Vyberte stat</label>
+        <select onchange="changeLocationList()" id="stat">
+            <option value="" selected disabled>Vyber stat</option>
+            <option value="svk">Slovensko</option>
+            <option value="cz">Ceska Republika</option>
+            <option value="at">Rakusko</option>
+        </select><br><br>
+        <label for="lp">Zadajte lokalitu kde sa pozemok nachádza</label>
+        <select id="lp">
+            <option value="" selected disabled>Vyber lokalitu </option>
+        </select><br><br>
+        <input type="submit" onclick="" value="calculate">
+    </form>
+
+    <p id="naklady">naklady na pozemok su</p>
+    <p id="pViladomov">pocet viladomov na pozemku</p>
+    <p id="pParkMiest">pocet parkovacich miest</p>
+
+    <p id="cpmNaLokalitu">celkove naklady projektu v danej lokalite</p>
+    <p id="vynosy">celkove vynosy projektu</p>
+    <p id="hz">hruby zisk</p>
+    <p id="cz">cisty zisk</p>
+
+
+
+    <script>
+        // databaza pre SVK
+        const db = {
+            svk: [
+                {
+                    id: '0',
+                    name: 'Bratislava',
+                    avgprice: 2399.99,
+                    plotprice: 144,
+                },
+                {
+                    id: '1',
+                    name: 'Trnava',
+                    avgprice: 1739.20,
+                    plotprice: 64,
+                },
+                {
+                    id: '2',
+                    name: 'Nitra',
+                    avgprice: 1604.80,
+                    plotprice: 76,
+                },
+                {
+                    id: '3',
+                    name: 'Kosice',
+                    avgprice: 1634.74,
+                    plotprice: 112,
+                },
+                {
+                    id: '4',
+                    name: 'Trencin',
+                    avgprice: 1456,
+                    plotprice: 60,
+                },
+                {
+                    id: '5',
+                    name: 'Piestany',
+                    avgprice: 1584,
+                    plotprice: 68,
+                },
+                {
+                    id: '6',
+                    name: 'Presov',
+                    avgprice: 1356.80,
+                    plotprice: 44.80,
+                },
+                {
+                    id: '7',
+                    name: 'Vysoke Tatry',
+                    avgprice: 1584,
+                    plotprice: 52,
+                },
+                {
+                    id: '8',
+                    name: 'Poprad',
+                    avgprice: 1640,
+                    plotprice: 68,
+                },
+                {
+                    id: '9',
+                    name: 'Banska Bystrica',
+                    avgprice: 1720,
+                    plotprice: 68,
+                },
+                {
+                    id: '10',
+                    name: 'Zvolen',
+                    avgprice: 1584,
+                    plotprice: 60,
+                },
+                {
+                    id: '11',
+                    name: 'Zilina',
+                    avgprice: 1550.94,
+                    plotprice: 81.60,
+                },
+                {
+                    id: '12',
+                    name: 'Liptovsky Mikulas',
+                    avgprice: 1468.97,
+                    plotprice: 69.60,
+                },]
+        }
+
+        // VSTUPNE UDAJE NA VYPOCET
+        //rozloha jedneho viladomu
+        const rjd = 2332;
+        //rozloha parkovacieho miesta
+        const rpm = 14;
+        //cena parkovacieho miesta
+        const cpm = 5900;
+        //predajna plocha 1 viladomu
+        const ppjv = 1591;
+
+        // VSTUPNE UDAJE NAKLADY NA 1 VILADOM
+        const njd = 1776448.94;
+
+        // ZBIERANIE UDAJOV
+        // rozloha pozemku
+        function checkRP(element) {
+            var rp = element.value;
+            return rp;
+        }
+
+        // nacitanie lokalit po zvoleni statu
+        var stateAndLoc = {};
+        stateAndLoc['svk'] = ['Bratislava', "Trnava", 'Nitra', 'Kosice', 'Trencin', 'Piestany', 'Presov', 'Vysoke Tatry', 'Poprad', 'Zvolen', 'Banska Bystrica', 'Zilina', 'Liptovsky Mikulas'];
+        stateAndLoc['cz'] = ['Karlove Vary', 'Cheb', 'Liberec', 'Hradec Kralove', 'Kladno', 'Mlada Boleslav', 'Praha okolie', 'Plzen', 'Ceske Budejovice', 'Jihlava', 'Pardubice', 'Brno', 'Breclav', 'Zlin', 'Uherske Hradiste', 'Olomouc', 'Ostrava'];
+        stateAndLoc['at'] = ['M6', 'X5', 'Z3'];
+
+        var stateList, locationList, selState;
+        function changeLocationList(locationList, selState) {
+            stateList = document.getElementById("stat");
+            locationList = document.getElementById("lp");
+            selState = stateList.options[stateList.selectedIndex].value;
+            while (locationList.options.length) {
+                locationList.remove(0);
+            }
+            var states = stateAndLoc[selState];
+            if (states) {
+                var i;
+                for (i = 0; i < states.length; i++) {
+                    var state = new Option(states[i], i);
+                    locationList.options.add(state);
+                }
+            }
+        }
+
+
+        // hladanie lokality v db
+        var el, selOpt, selObj, avg;
+        function findObjectByKey(db) {
+            stateList = document.getElementById("stat")
+            el = document.getElementById("lp");
+            selOpt = el.options[el.selectedIndex].value;
+            selState = stateList.options[stateList.selectedIndex].value;
+            var o;
+            for (o = 0; o < db.lenght; o++) {
+                if (db[o] === selstate) {
+                    selObj = [db[o]];
+                    return selObj;
+                }
+            }
+            for (o = 0; o < selObj.length; o++) {
+                if (selObj[o].id === selopt) {
+                    avg = selObj[o].avgprice;
+                    return avg;
+                }
+            }
+            return selObj, avg;
+        }
+
+        // VYPOCET NAKLADOV NA POZEMOK
+        function nnp(svkdb, rp, lp) {
+            lp
+        }
+
+        // POCET VILADOMOV NA POZEMOK
+
+
+    </script>
+</body>
+</html>
