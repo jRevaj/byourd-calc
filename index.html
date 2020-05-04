@@ -19,7 +19,7 @@
             <option value="" selected disabled>Vyber stat</option>
             <option value="svk">Slovensko</option>
             <option value="cz">Ceska Republika</option>
-            <option value="at">Rakusko</option>
+            <!-- <option value="at">Rakusko</option> -->
         </select><br><br>
         <label for="lp">Zadajte lokalitu kde sa pozemok nachádza</label>
         <select id="lp">
@@ -39,7 +39,8 @@
 
 
     <script>
-        // databaza pre SVK
+        // DB -----------------------------------------------------
+        // db hodnot pre lokality
         let db = {};
         db['svk'] = [
             {
@@ -223,8 +224,12 @@
                 avgprice: 1789.6635,
                 plotprice: 111,
             }]
+        // pomocna db pre vyber lokality
+        let stateAndLoc = {};
+        stateAndLoc['svk'] = ['Bratislava', "Trnava", 'Nitra', 'Kosice', 'Trencin', 'Piestany', 'Presov', 'Vysoke Tatry', 'Poprad', 'Zvolen', 'Banska Bystrica', 'Zilina', 'Liptovsky Mikulas'];
+        stateAndLoc['cz'] = ['Karlove Vary', 'Cheb', 'Liberec', 'Hradec Kralove', 'Kladno', 'Mlada Boleslav', 'Praha okolie', 'Plzen', 'Ceske Budejovice', 'Jihlava', 'Pardubice', 'Brno', 'Breclav', 'Zlin', 'Uherske Hradiste', 'Olomouc', 'Ostrava'];
 
-        // VSTUPNE UDAJE NA VYPOCET
+        // VSTUPNE UDAJE NA VYPOCET ---------------------------------------------------
         //rozloha jedneho viladomu
         const rjd = 2332;
         //rozloha parkovacieho miesta
@@ -233,29 +238,30 @@
         const cpm = 5900;
         //predajna plocha 1 viladomu
         const ppjv = 1591;
-
-        // VSTUPNE UDAJE NAKLADY NA 1 VILADOM
+        //naklady na 1 viladom
         const njd = 1776448.94;
 
-        // ZBIERANIE UDAJOV
-        // rozloha pozemku
+        // POMOCNE PREMENNE
         let rp, currentVal;
-
-
-        // nacitanie lokalit po zvoleni statu
-        let stateAndLoc = {};
-        stateAndLoc['svk'] = ['Bratislava', "Trnava", 'Nitra', 'Kosice', 'Trencin', 'Piestany', 'Presov', 'Vysoke Tatry', 'Poprad', 'Zvolen', 'Banska Bystrica', 'Zilina', 'Liptovsky Mikulas'];
-        stateAndLoc['cz'] = ['Karlove Vary', 'Cheb', 'Liberec', 'Hradec Kralove', 'Kladno', 'Mlada Boleslav', 'Praha okolie', 'Plzen', 'Ceske Budejovice', 'Jihlava', 'Pardubice', 'Brno', 'Breclav', 'Zlin', 'Uherske Hradiste', 'Olomouc', 'Ostrava'];
-        stateAndLoc['at'] = ['M6', 'X5', 'Z3'];
-
         let stateList, locationList, selState;
+        let selOpt, plot, result, resultPVNP, resultCVP;
+
+        // ZMENA LOKALIT PODLA VYBERU STATU ----------------------------------------------------
+        // func pre zmenu lokalit podla statu
         function changeLocationList() {
+            // oznacenie elementov
             stateList = document.getElementById("stat");
             locationList = document.getElementById("lp");
+
+            //zbieranie hodnot
             selState = stateList.options[stateList.selectedIndex].value;
+
+            // vymazanie uz nacitanych hodnot
             while (locationList.options.length) {
                 locationList.remove(0);
             }
+
+            // nacitanie hodnot zo zoznamu po zvoleni statu
             let states = stateAndLoc[selState];
             if (states) {
                 var i;
@@ -266,59 +272,36 @@
             }
         }
 
-        // VYPOCET NAKLADOV NA POZEMOK
-        // hladanie lokality v db
-        let selOpt, plot, result, resultPVNP, resultCVP;
-
+        // VYPOCTY -----------------------------------------------------------------------
+        // main func
         function findObjectByKey() {
+            // oznacenie elementov
             stateList = document.getElementById("stat");
             locationList = document.getElementById("lp");
             rp = document.getElementById("rp");
 
+            //zbieranie hodnot
             selState = stateList.options[stateList.selectedIndex].value;
             selOpt = locationList.options[locationList.selectedIndex].value;
             currentVal = rp.value;
 
+            // nájdenie hodnôt v db
             plot = db[selState].find( ({ id }) => id === selOpt);
+
+            // naklady na pozemok
             result = currentVal * plot.plotprice;
             result = Math.round((result + Number.EPSILON) * 100) / 100;
             document.getElementById("naklady").innerHTML = "naklady na pozemok su " + result;
 
+            // pocet vila domov
             resultPVNP = currentVal / rjd;
             resultPVNP = Math.floor(resultPVNP);
             document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude " + resultPVNP;
 
+            // vynosy projektu
             resultCVP = resultPVNP * ppjv * plot.avgprice + (180 * cpm);
             document.getElementById("vynosy").innerHTML = "celkove vynosy projektu " + resultCVP;
         }
-
-        // POCET VILADOMOV NA POZEMOK
-
-        /*
-                                        let el, selOpt, selObj, plot;
-                                        function findObjectByKey() {
-                                            stateList = document.getElementById("stat")
-                                            el = document.getElementById("lp");
-                                            selOpt = el.options[el.selectedIndex].value;
-                                            selState = stateList.options[stateList.selectedIndex].value;
-                                            let o = 0;
-                                            while (o <= db.length) {
-                                                if (db[o] === selState) {
-                                                    selObj = db[o];
-                                                } else {
-                                                    o++
-                                                }
-                                                selObj;
-                                            }
-                                            for (o = 0; o < selObj.length; o++) {
-                                                if (selObj[o].id === selopt) {
-                                                    plot = selObj[o].plotprice;
-                                                }
-                                            }
-                                            return selObj;
-                                        }
-                                        */
-
     </script>
 </body>
 </html>
