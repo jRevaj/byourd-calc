@@ -25,19 +25,34 @@
         <select id="lp">
             <option value="" selected disabled>Vyber lokalitu </option>
         </select><br><br>
-        <input type="button" onclick="findObjectByKey()" value="calculate">
+        <input type="button" onclick="kalkulacia()" value="calculate">
     </form>
 
     <p id="naklady"></p>
     <p id="pViladomov"></p>
+    <p id="pParkMiest"></p>
+    <p id="cnpNaLokalitu"></p>
     <p id="vynosy"></p>
-    <p id="pParkMiest">pocet parkovacich miest</p>
-    <p id="cpmNaLokalitu">celkove naklady projektu v danej lokalite</p>
-    <p id="hz">hruby zisk</p>
-    <p id="cz">cisty zisk</p>
+    <p id="hz"></p>
+    <p id="cz"></p>
 
 
+    <p>struktura financovania a vsetky dolezite financne ukazovatele</p>
+    <form id="form1" action="index.html">
+        <input type="email" name="user-email" id="mail" placeholder="Zadajte vas email" required><br>
+        <input type="button" onclick="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
+    </form>
 
+    <div id="zobrazitPoZadani">
+        <p id="pozemok"></p>
+        <p id="investicia"></p>
+        <p id="cudzieZdroje"></p>
+        <p id="roi"></p>
+        <p id="roe"></p>1
+        <p id="dobaNavratnosti"></p>
+        <p id="npv"></p>
+        <p id="irr"></p>
+    </div>
     <script>
         // DB -----------------------------------------------------
         // db hodnot pre lokality
@@ -244,7 +259,8 @@
         // POMOCNE PREMENNE
         let rp, currentVal;
         let stateList, locationList, selState;
-        let selOpt, plot, result, resultPVNP, resultCVP;
+        let selOpt, plot, result, resultPVNP, resultCVP, resultPPM, resultCNPDL, resultHZ, resultCZ;
+        let inv, cudzieZdroje, roi, roe, dn, npv, irr;
 
         // ZMENA LOKALIT PODLA VYBERU STATU ----------------------------------------------------
         // func pre zmenu lokalit podla statu
@@ -274,7 +290,7 @@
 
         // VYPOCTY -----------------------------------------------------------------------
         // main func
-        function findObjectByKey() {
+        function kalkulacia() {
             // oznacenie elementov
             stateList = document.getElementById("stat");
             locationList = document.getElementById("lp");
@@ -291,16 +307,42 @@
             // naklady na pozemok
             result = currentVal * plot.plotprice;
             result = Math.round((result + Number.EPSILON) * 100) / 100;
-            document.getElementById("naklady").innerHTML = "naklady na pozemok su " + result;
+            document.getElementById("naklady").innerHTML = "naklady na pozemok su: " + result;
 
             // pocet vila domov
             resultPVNP = currentVal / rjd;
             resultPVNP = Math.floor(resultPVNP);
-            document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude " + resultPVNP;
+            document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude: " + resultPVNP;
 
-            // vynosy projektu
-            resultCVP = resultPVNP * ppjv * plot.avgprice + (180 * cpm);
-            document.getElementById("vynosy").innerHTML = "celkove vynosy projektu " + resultCVP;
+            // pocet parkovacich miest
+            resultPPM = resultPVNP * 18;
+            resultPPM = Math.floor(resultPPM);
+            document.getElementById("pParkMiest").innerHTML = "pocet parkovacich miest: " + resultPPM;
+
+            // celkove naklady projektu v danej lokalite
+            resultCNPDL = resultPVNP * njd + result;
+            resultCNPDL = Math.round((resultCNPDL + Number.EPSILON) * 100) / 100;
+            document.getElementById("cnpNaLokalitu").innerHTML = "celkove naklady projektu v danej lokalite: " + resultCNPDL;
+
+            // celkove vynosy projektu
+            resultCVP = resultPVNP * ppjv * plot.avgprice + (resultPPM * cpm);
+            resultCVP = Math.round((resultCVP + Number.EPSILON) * 100) / 100;
+            document.getElementById("vynosy").innerHTML = "celkove vynosy projektu: " + resultCVP;
+
+            // hruby zisk
+            resultHZ = resultCVP - resultCNPDL;
+            resultHZ = Math.round((resultHZ + Number.EPSILON) * 100) / 100;
+            document.getElementById("hz").innerHTML = "hruby zisk: " + resultHZ;
+
+            // cisty zisk
+            resultCZ = resultHZ - (resultHZ * 0.21);
+            resultCZ = Math.round((resultCZ + Number.EPSILON) * 100) / 100;
+            document.getElementById("cz").innerHTML = "cisty zisk: " + resultCZ;
+        }
+
+        // udaje zobrazene po zadani mailu
+        function kalkulaciaPoZadaniMailu() {
+
         }
     </script>
 </body>
