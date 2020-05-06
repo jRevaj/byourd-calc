@@ -43,16 +43,14 @@
         <input type="button" onclick="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
     </form>
 
-    <div id="zobrazitPoZadani">
-        <p id="pozemok"></p>
-        <p id="investicia"></p>
-        <p id="cudzieZdroje"></p>
-        <p id="roi"></p>
-        <p id="roe"></p>1
-        <p id="dobaNavratnosti"></p>
-        <p id="npv"></p>
-        <p id="irr"></p>
-    </div>
+    <p id="pozemok"></p>
+    <p id="investicia"></p>
+    <p id="cudzieZdroje"></p>
+    <p id="roi"></p>
+    <p id="roe"></p>
+    <p id="dobaNavratnosti"></p>
+    <p id="npv"></p>
+    <p id="irr"></p>
     <script>
         // DB -----------------------------------------------------
         // db hodnot pre lokality
@@ -256,12 +254,20 @@
         //naklady na 1 viladom
         const njd = 1776448.94;
 
-        // POMOCNE PREMENNE
+        // POMOCNE PREMENNE ------------------------------------------------------------
         let rp, currentVal;
         let stateList, locationList, selState;
         let selOpt, plot, result, resultPVNP, resultCVP, resultPPM, resultCNPDL, resultHZ, resultCZ;
         let inv, cudzieZdroje, roi, roe, dn, npv, irr;
 
+        // pomocné premenné pre pomocné výpočty
+        let kv1, kv2, kv3, kv4;
+        let kp1, kp2, kp3, kp4;
+        let cth1, cth2, cth3, cth4;
+        let df1, df2, df3, df4;
+        let dct1, dct2 ,dct3, dct4;
+        let kdt1, kdt2, kdt3, kdt4;
+        let CArray, irrC, min, max, NPVt;
         // ZMENA LOKALIT PODLA VYBERU STATU ----------------------------------------------------
         // func pre zmenu lokalit podla statu
         function changeLocationList() {
@@ -306,43 +312,145 @@
 
             // naklady na pozemok
             result = currentVal * plot.plotprice;
-            result = Math.round((result + Number.EPSILON) * 100) / 100;
-            document.getElementById("naklady").innerHTML = "naklady na pozemok su: " + result;
 
             // pocet vila domov
             resultPVNP = currentVal / rjd;
             resultPVNP = Math.floor(resultPVNP);
-            document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude: " + resultPVNP;
 
             // pocet parkovacich miest
             resultPPM = resultPVNP * 18;
             resultPPM = Math.floor(resultPPM);
-            document.getElementById("pParkMiest").innerHTML = "pocet parkovacich miest: " + resultPPM;
 
             // celkove naklady projektu v danej lokalite
             resultCNPDL = resultPVNP * njd + result;
-            resultCNPDL = Math.round((resultCNPDL + Number.EPSILON) * 100) / 100;
-            document.getElementById("cnpNaLokalitu").innerHTML = "celkove naklady projektu v danej lokalite: " + resultCNPDL;
 
             // celkove vynosy projektu
             resultCVP = resultPVNP * ppjv * plot.avgprice + (resultPPM * cpm);
-            resultCVP = Math.round((resultCVP + Number.EPSILON) * 100) / 100;
-            document.getElementById("vynosy").innerHTML = "celkove vynosy projektu: " + resultCVP;
 
             // hruby zisk
             resultHZ = resultCVP - resultCNPDL;
-            resultHZ = Math.round((resultHZ + Number.EPSILON) * 100) / 100;
-            document.getElementById("hz").innerHTML = "hruby zisk: " + resultHZ;
 
             // cisty zisk
             resultCZ = resultHZ - (resultHZ * 0.21);
+
+            // zaokruhlenie na 2 desatine miesta
+            result = Math.round((result + Number.EPSILON) * 100) / 100;
+            resultCNPDL = Math.round((resultCNPDL + Number.EPSILON) * 100) / 100;
+            resultCVP = Math.round((resultCVP + Number.EPSILON) * 100) / 100;
+            resultHZ = Math.round((resultHZ + Number.EPSILON) * 100) / 100;
             resultCZ = Math.round((resultCZ + Number.EPSILON) * 100) / 100;
-            document.getElementById("cz").innerHTML = "cisty zisk: " + resultCZ;
+
+            // vypisanie vysledkov
+            document.getElementById("naklady").innerHTML = "naklady na pozemok su: " + result.toLocaleString() + "€";
+            document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude: " + resultPVNP;
+            document.getElementById("pParkMiest").innerHTML = "pocet parkovacich miest: " + resultPPM;
+            document.getElementById("cnpNaLokalitu").innerHTML = "celkove naklady projektu v danej lokalite: " + resultCNPDL.toLocaleString() + "€";
+            document.getElementById("vynosy").innerHTML = "celkove vynosy projektu: " + resultCVP.toLocaleString() + "€";
+            document.getElementById("hz").innerHTML = "hruby zisk: " + resultHZ.toLocaleString() + "€";
+            document.getElementById("cz").innerHTML = "cisty zisk: " + resultCZ.toLocaleString() + "€";
         }
 
-        // udaje zobrazene po zadani mailu
+        // UDAJE ZOBRAZENE PO ZADANI MAILU -----------------------------------------------
         function kalkulaciaPoZadaniMailu() {
+            // POMOCNE VYPOCTY NA KAZDY ROK TRVANIA PROJEKTU
+            // kapitalove vydavky
+            kv1 = resultCNPDL * 0.23;
+            kv2 = resultCNPDL * 0.56;
+            kv3 = resultCNPDL * 0.21;
+            kv4 = resultCNPDL * 0;
+            // kapitalove prijmy
+            kp1 = resultCVP * 0.03;
+            kp2 = resultCVP * 0.05;
+            kp3 = resultCVP * 0.72;
+            kp4 = resultCVP * 0.2;
+            // ciste toky hotovosti
+            cth1 = kp1 - kv1;
+            cth2 = kp2 - kv2;
+            cth3 = kp3 - kv3;
+            cth4 = kp4 - kv4;
+            // diskontny faktor
+            df1 = 0.967726326994726;
+            df2 = 0.936494243958703;
+            df3 = 0.906270134957859;
+            df4 = 0.877021468967783;
+            // diskontovane ciste toky
+            dct1 = cth1 * df1;
+            dct2 = cth2 * df2;
+            dct3 = cth3 * df3;
+            dct4 = cth4 * df4;
+            // kumulovane diskontne toky
+            kdt1 = dct1;
+            kdt2 = dct2 + kdt1;
+            kdt3 = dct3 + kdt2;
+            kdt4 = dct4 + kdt3;
 
+            // CUDZIE ZDROJE
+            cudzieZdroje = resultCNPDL * 0.75;
+
+
+            // INVESTICIA
+            inv = resultCNPDL - cudzieZdroje - result;
+
+
+            // ROI
+            roi = resultCZ / (result + inv + cudzieZdroje);
+
+
+            // ROE
+            roe = resultCZ / (result + inv);
+
+
+            // DOBA NAVRATNOSTI
+            dn = 3 + (kdt3 / -kdt4);
+
+
+            // NPV
+            npv = dct1 + dct2 + dct3 + dct4;
+
+
+            // IRR
+            // pomocna funkcia
+            CArray = [cth1, cth2, cth3, cth4];
+
+            function IRRCalc() {
+                min = 0.0;
+                max = 1.0;
+                do {
+                    irrC = (min + max) / 2;
+                    NPVt = 0;
+                    for (var j=0; j<CArray.length; j++) {
+                        NPVt += CArray[j]/Math.pow((1+irrC),j);
+                    }
+                    if (NPVt > 0) {
+                        min = irrC;
+                    }
+                    else {
+                        max = irrC;
+                    }
+                } while(Math.abs(NPVt) > 0.000001);
+                return irrC * 100;
+            }
+            // vysledok pomocnej funkcie
+            irr = IRRCalc();
+
+            // ZAOKRUHLENIE
+            cudzieZdroje = Math.round((cudzieZdroje + Number.EPSILON) * 100) / 100;
+            inv = Math.round((inv + Number.EPSILON) * 100) / 100;
+            roi = Math.round((roi + Number.EPSILON) * 10000) / 100;
+            roe = Math.round((roe + Number.EPSILON) * 10000) / 100;
+            dn = Math.round((dn + Number.EPSILON) * 100) / 100;
+            npv = Math.round((npv + Number.EPSILON) * 100) / 100;
+            irr = Math.round((irr + Number.EPSILON) * 100) / 100;
+
+            // ZOBRAZENIE
+            document.getElementById("pozemok").innerHTML = "pozemok: " + result.toLocaleString() + "€";
+            document.getElementById("cudzieZdroje").innerHTML = "Cudzie zdroje: " + cudzieZdroje.toLocaleString() + "€";
+            document.getElementById("investicia").innerHTML = "Investicia: " + inv.toLocaleString() + "€";
+            document.getElementById("roi").innerHTML = "ROI: " + roi + "%";
+            document.getElementById("roe").innerHTML = "ROE: " + roe + "%";
+            document.getElementById("dobaNavratnosti").innerHTML = "Doba navratnosti: " + dn;
+            document.getElementById("npv").innerHTML = "NPV: " + npv.toLocaleString() + "€";
+            document.getElementById("irr").innerHTML = "IRR: " + irr + "%";
         }
     </script>
 </body>
