@@ -1,189 +1,194 @@
-let db = {
-    svk: [
-        {
-            id: '0',
-            name: 'Bratislava',
-            avgprice: 2399.99,
-            plotprice: 144,
-        },
-        {
-            id: '1',
-            name: 'Trnava',
-            avgprice: 1739.20,
-            plotprice: 64,
-        },
-        {
-            id: '2',
-            name: 'Nitra',
-            avgprice: 1604.80,
-            plotprice: 76,
-        },
-        {
-            id: '3',
-            name: 'Kosice',
-            avgprice: 1634.74,
-            plotprice: 112,
-        },
-        {
-            id: '4',
-            name: 'Trencin',
-            avgprice: 1456,
-            plotprice: 60,
-        },
-        {
-            id: '5',
-            name: 'Piestany',
-            avgprice: 1584,
-            plotprice: 68,
-        },
-        {
-            id: '6',
-            name: 'Presov',
-            avgprice: 1356.80,
-            plotprice: 44.80,
-        },
-        {
-            id: '7',
-            name: 'Vysoke Tatry',
-            avgprice: 1584,
-            plotprice: 52,
-        },
-        {
-            id: '8',
-            name: 'Poprad',
-            avgprice: 1640,
-            plotprice: 68,
-        },
-        {
-            id: '9',
-            name: 'Banska Bystrica',
-            avgprice: 1720,
-            plotprice: 68,
-        },
-        {
-            id: '10',
-            name: 'Zvolen',
-            avgprice: 1584,
-            plotprice: 60,
-        },
-        {
-            id: '11',
-            name: 'Zilina',
-            avgprice: 1550.94,
-            plotprice: 81.60,
-        },
-        {
-            id: '12',
-            name: 'Liptovsky Mikulas',
-            avgprice: 1468.97,
-            plotprice: 69.60,
-        },],
-    cz: [
-        {
-            id: '0',
-            name: 'Karlove Vary',
-            avgprice: 1381.7818,
-            plotprice: 59.20,
-        },
-        {
-            id: '1',
-            name: 'Cheb',
-            avgprice: 1934.7449,
-            plotprice: 84.36,
-        },
-        {
-            id: '2',
-            name: 'Liberec',
-            avgprice: 1666.1100,
-            plotprice: 73.26,
-        },
-        {
-            id: '3',
-            name: 'Hradec Kralove',
-            avgprice: 1907.3814,
-            plotprice: 79.92,
-        },
-        {
-            id: '4',
-            name: 'Kladno',
-            avgprice: 1960.4775,
-            plotprice: 66.60,
-        },
-        {
-            id: '5',
-            name: 'Mlada Boleslav',
-            avgprice: 1525.7451,
-            plotprice: 44.40,
-        },
-        {
-            id: '6',
-            name: 'Praha okolie',
-            avgprice: 2731.9611,
-            plotprice: 203.50,
-        },
-        {
-            id: '7',
-            name: 'Plzen',
-            avgprice: 1587.8435,
-            plotprice: 46.25,
-        },
-        {
-            id: '8',
-            name: 'Ceske Budejovice',
-            avgprice: 1357.1071,
-            plotprice: 47.36,
-        },
-        {
-            id: '9',
-            name: 'Jihlava',
-            avgprice: 1433.3942,
-            plotprice: 35,
-        },
-        {
-            id: '10',
-            name: 'Pardubice',
-            avgprice: 1612.8696,
-            plotprice: 29.60,
-        },
-        {
-            id: '11',
-            name: 'Brno',
-            avgprice: 1838.0220,
-            plotprice: 118.40,
-        },
-        {
-            id: '12',
-            name: 'Breclav',
-            avgprice: 1727.7472,
-            plotprice: 46.95,
-        },
-        {
-            id: '13',
-            name: 'Zlin',
-            avgprice: 1737.3807,
-            plotprice: 66.60,
-        },
-        {
-            id: '14',
-            name: 'Uherske Hradiste',
-            avgprice: 1492.60,
-            plotprice: 62.90,
-        },
-        {
-            id: '15',
-            name: 'Olomouc',
-            avgprice: 1469.2142,
-            plotprice: 70.15,
-        },
-        {
-            id: '16',
-            name: 'Ostrava',
-            avgprice: 1789.6635,
-            plotprice: 111,
-        },]
-}
+// DB -----------------------------------------------------
+// db hodnot pre lokality
+let db = {};
+db['svk'] = [
+    {
+        id: '0',
+        name: 'Bratislava',
+        avgprice: 2399.99,
+        plotprice: 144,
+    },
+    {
+        id: '1',
+        name: 'Trnava',
+        avgprice: 1739.20,
+        plotprice: 64,
+    },
+    {
+        id: '2',
+        name: 'Nitra',
+        avgprice: 1604.80,
+        plotprice: 76,
+    },
+    {
+        id: '3',
+        name: 'Kosice',
+        avgprice: 1634.74,
+        plotprice: 112,
+    },
+    {
+        id: '4',
+        name: 'Trencin',
+        avgprice: 1456,
+        plotprice: 60,
+    },
+    {
+        id: '5',
+        name: 'Piestany',
+        avgprice: 1584,
+        plotprice: 68,
+    },
+    {
+        id: '6',
+        name: 'Presov',
+        avgprice: 1356.80,
+        plotprice: 44.80,
+    },
+    {
+        id: '7',
+        name: 'Vysoke Tatry',
+        avgprice: 1584,
+        plotprice: 52,
+    },
+    {
+        id: '8',
+        name: 'Poprad',
+        avgprice: 1640,
+        plotprice: 68,
+    },
+    {
+        id: '9',
+        name: 'Banska Bystrica',
+        avgprice: 1720,
+        plotprice: 68,
+    },
+    {
+        id: '10',
+        name: 'Zvolen',
+        avgprice: 1584,
+        plotprice: 60,
+    },
+    {
+        id: '11',
+        name: 'Zilina',
+        avgprice: 1550.94,
+        plotprice: 81.60,
+    },
+    {
+        id: '12',
+        name: 'Liptovsky Mikulas',
+        avgprice: 1468.97,
+        plotprice: 69.60,
+    }]
+db['cz'] = [
+    {
+        id: '0',
+        name: 'Karlove Vary',
+        avgprice: 1381.7818,
+        plotprice: 59.20,
+    },
+    {
+        id: '1',
+        name: 'Cheb',
+        avgprice: 1934.7449,
+        plotprice: 84.36,
+    },
+    {
+        id: '2',
+        name: 'Liberec',
+        avgprice: 1666.1100,
+        plotprice: 73.26,
+    },
+    {
+        id: '3',
+        name: 'Hradec Kralove',
+        avgprice: 1907.3814,
+        plotprice: 79.92,
+    },
+    {
+        id: '4',
+        name: 'Kladno',
+        avgprice: 1960.4775,
+        plotprice: 66.60,
+    },
+    {
+        id: '5',
+        name: 'Mlada Boleslav',
+        avgprice: 1525.7451,
+        plotprice: 44.40,
+    },
+    {
+        id: '6',
+        name: 'Praha okolie',
+        avgprice: 2731.9611,
+        plotprice: 203.50,
+    },
+    {
+        id: '7',
+        name: 'Plzen',
+        avgprice: 1587.8435,
+        plotprice: 46.25,
+    },
+    {
+        id: '8',
+        name: 'Ceske Budejovice',
+        avgprice: 1357.1071,
+        plotprice: 47.36,
+    },
+    {
+        id: '9',
+        name: 'Jihlava',
+        avgprice: 1433.3942,
+        plotprice: 35,
+    },
+    {
+        id: '10',
+        name: 'Pardubice',
+        avgprice: 1612.8696,
+        plotprice: 29.60,
+    },
+    {
+        id: '11',
+        name: 'Brno',
+        avgprice: 1838.0220,
+        plotprice: 118.40,
+    },
+    {
+        id: '12',
+        name: 'Breclav',
+        avgprice: 1727.7472,
+        plotprice: 46.95,
+    },
+    {
+        id: '13',
+        name: 'Zlin',
+        avgprice: 1737.3807,
+        plotprice: 66.60,
+    },
+    {
+        id: '14',
+        name: 'Uherske Hradiste',
+        avgprice: 1492.60,
+        plotprice: 62.90,
+    },
+    {
+        id: '15',
+        name: 'Olomouc',
+        avgprice: 1469.2142,
+        plotprice: 70.15,
+    },
+    {
+        id: '16',
+        name: 'Ostrava',
+        avgprice: 1789.6635,
+        plotprice: 111,
+    }]
+// pomocna db pre vyber lokality
+let stateAndLoc = {};
+stateAndLoc['svk'] = ['Bratislava', "Trnava", 'Nitra', 'Kosice', 'Trencin', 'Piestany', 'Presov', 'Vysoke Tatry', 'Poprad', 'Zvolen', 'Banska Bystrica', 'Zilina', 'Liptovsky Mikulas'];
+stateAndLoc['cz'] = ['Karlove Vary', 'Cheb', 'Liberec', 'Hradec Kralove', 'Kladno', 'Mlada Boleslav', 'Praha okolie', 'Plzen', 'Ceske Budejovice', 'Jihlava', 'Pardubice', 'Brno', 'Breclav', 'Zlin', 'Uherske Hradiste', 'Olomouc', 'Ostrava'];
 
-// VSTUPNE UDAJE NA VYPOCET
+// VSTUPNE UDAJE NA VYPOCET ---------------------------------------------------
 //rozloha jedneho viladomu
 const rjd = 2332;
 //rozloha parkovacieho miesta
@@ -192,31 +197,39 @@ const rpm = 14;
 const cpm = 5900;
 //predajna plocha 1 viladomu
 const ppjv = 1591;
-
-// VSTUPNE UDAJE NAKLADY NA 1 VILADOM
+//naklady na 1 viladom
 const njd = 1776448.94;
 
-// ZBIERANIE UDAJOV
-// rozloha pozemku
-function checkRP(element) {
-    let rp = element.value;
-    return rp;
-}
-
-// nacitanie lokalit po zvoleni statu
-let stateAndLoc = {};
-stateAndLoc['svk'] = ['Bratislava', "Trnava", 'Nitra', 'Kosice', 'Trencin', 'Piestany', 'Presov', 'Vysoke Tatry', 'Poprad', 'Zvolen', 'Banska Bystrica', 'Zilina', 'Liptovsky Mikulas'];
-stateAndLoc['cz'] = ['Karlove Vary', 'Cheb', 'Liberec', 'Hradec Kralove', 'Kladno', 'Mlada Boleslav', 'Praha okolie', 'Plzen', 'Ceske Budejovice', 'Jihlava', 'Pardubice', 'Brno', 'Breclav', 'Zlin', 'Uherske Hradiste', 'Olomouc', 'Ostrava'];
-stateAndLoc['at'] = ['M6', 'X5', 'Z3'];
-
+// POMOCNE PREMENNE ------------------------------------------------------------
+let rp, currentVal;
 let stateList, locationList, selState;
+let selOpt, plot, result, resultPVNP, resultCVP, resultPPM, resultCNPDL, resultHZ, resultCZ;
+let inv, cudzieZdroje, roi, roe, dn, npv, irr;
+
+// pomocné premenné pre pomocné výpočty
+let kv1, kv2, kv3, kv4;
+let kp1, kp2, kp3, kp4;
+let cth1, cth2, cth3, cth4;
+let df1, df2, df3, df4;
+let dct1, dct2 ,dct3, dct4;
+let kdt1, kdt2, kdt3, kdt4;
+let CArray, irrC, min, max, NPVt;
+// ZMENA LOKALIT PODLA VYBERU STATU ----------------------------------------------------
+// func pre zmenu lokalit podla statu
 function changeLocationList() {
+    // oznacenie elementov
     stateList = document.getElementById("stat");
     locationList = document.getElementById("lp");
+
+    //zbieranie hodnot
     selState = stateList.options[stateList.selectedIndex].value;
+
+    // vymazanie uz nacitanych hodnot
     while (locationList.options.length) {
         locationList.remove(0);
     }
+
+    // nacitanie hodnot zo zoznamu po zvoleni statu
     let states = stateAndLoc[selState];
     if (states) {
         var i;
@@ -227,34 +240,161 @@ function changeLocationList() {
     }
 }
 
+// VYPOCTY -----------------------------------------------------------------------
+// main func
+function kalkulacia() {
+    // oznacenie elementov
+    stateList = document.getElementById("stat");
+    locationList = document.getElementById("lp");
+    rp = document.getElementById("rp");
 
-// hladanie lokality v db
-let el, selOpt, selObj, plot;
-function findObjectByKey() {
-    stateList = document.getElementById("stat")
-    el = document.getElementById("lp");
-    selOpt = el.options[el.selectedIndex].value;
+    //zbieranie hodnot
     selState = stateList.options[stateList.selectedIndex].value;
-    let o = 0;
-    while (o <= db.length) {
-        if (db[o] === selState) {
-            selObj = db[o];
-        } else {
-            o++
-        }
-        selObj;
-    }
-    for (o = 0; o < selObj.length; o++) {
-        if (selObj[o].id === selopt) {
-            plot = selObj[o].plotprice;
-        }
-    }
-    return selObj;
+    selOpt = locationList.options[locationList.selectedIndex].value;
+    currentVal = rp.value;
+
+    // nájdenie hodnôt v db
+    plot = db[selState].find( ({ id }) => id === selOpt);
+
+    // naklady na pozemok
+    result = currentVal * plot.plotprice;
+
+    // pocet vila domov
+    resultPVNP = currentVal / rjd;
+    resultPVNP = Math.floor(resultPVNP);
+
+    // pocet parkovacich miest
+    resultPPM = resultPVNP * 18;
+    resultPPM = Math.floor(resultPPM);
+
+    // celkove naklady projektu v danej lokalite
+    resultCNPDL = resultPVNP * njd + result;
+
+    // celkove vynosy projektu
+    resultCVP = resultPVNP * ppjv * plot.avgprice + (resultPPM * cpm);
+
+    // hruby zisk
+    resultHZ = resultCVP - resultCNPDL;
+
+    // cisty zisk
+    resultCZ = resultHZ - (resultHZ * 0.21);
+
+    // zaokruhlenie na 2 desatine miesta
+    result = Math.round((result + Number.EPSILON) * 100) / 100;
+    resultCNPDL = Math.round((resultCNPDL + Number.EPSILON) * 100) / 100;
+    resultCVP = Math.round((resultCVP + Number.EPSILON) * 100) / 100;
+    resultHZ = Math.round((resultHZ + Number.EPSILON) * 100) / 100;
+    resultCZ = Math.round((resultCZ + Number.EPSILON) * 100) / 100;
+
+    // vypisanie vysledkov
+    document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
+    document.getElementById("pViladomov").innerHTML = resultPVNP;
+    document.getElementById("pParkMiest").innerHTML = resultPPM;
+    document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
+    document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
+    document.getElementById("hz").innerHTML = resultHZ.toLocaleString() + "€";
+    document.getElementById("cz").innerHTML = resultCZ.toLocaleString() + "€";
 }
 
-// VYPOCET NAKLADOV NA POZEMOK
-findObjectByKey()
-var nnp;
+// UDAJE ZOBRAZENE PO ZADANI MAILU -----------------------------------------------
+function kalkulaciaPoZadaniMailu() {
+    // POMOCNE VYPOCTY NA KAZDY ROK TRVANIA PROJEKTU
+    // kapitalove vydavky
+    kv1 = resultCNPDL * 0.23;
+    kv2 = resultCNPDL * 0.56;
+    kv3 = resultCNPDL * 0.21;
+    kv4 = resultCNPDL * 0;
+    // kapitalove prijmy
+    kp1 = resultCVP * 0.03;
+    kp2 = resultCVP * 0.05;
+    kp3 = resultCVP * 0.72;
+    kp4 = resultCVP * 0.2;
+    // ciste toky hotovosti
+    cth1 = kp1 - kv1;
+    cth2 = kp2 - kv2;
+    cth3 = kp3 - kv3;
+    cth4 = kp4 - kv4;
+    // diskontny faktor
+    df1 = 0.967726326994726;
+    df2 = 0.936494243958703;
+    df3 = 0.906270134957859;
+    df4 = 0.877021468967783;
+    // diskontovane ciste toky
+    dct1 = cth1 * df1;
+    dct2 = cth2 * df2;
+    dct3 = cth3 * df3;
+    dct4 = cth4 * df4;
+    // kumulovane diskontne toky
+    kdt1 = dct1;
+    kdt2 = dct2 + kdt1;
+    kdt3 = dct3 + kdt2;
+    kdt4 = dct4 + kdt3;
 
-document.getElementById("naklady").innerHTML = "naklady na pozemok su" + nnp;
-// POCET VILADOMOV NA POZEMOK
+    // CUDZIE ZDROJE
+    cudzieZdroje = resultCNPDL * 0.75;
+
+
+    // INVESTICIA
+    inv = resultCNPDL - cudzieZdroje - result;
+
+
+    // ROI
+    roi = resultCZ / (result + inv + cudzieZdroje);
+
+
+    // ROE
+    roe = resultCZ / (result + inv);
+
+
+    // DOBA NAVRATNOSTI
+    dn = 3 + (kdt3 / -kdt4);
+
+
+    // NPV
+    npv = dct1 + dct2 + dct3 + dct4;
+
+
+    // IRR
+    // pomocna funkcia
+    CArray = [cth1, cth2, cth3, cth4];
+
+    function IRRCalc() {
+        min = 0.0;
+        max = 1.0;
+        do {
+            irrC = (min + max) / 2;
+            NPVt = 0;
+            for (var j=0; j<CArray.length; j++) {
+                NPVt += CArray[j]/Math.pow((1+irrC),j);
+            }
+            if (NPVt > 0) {
+                min = irrC;
+            }
+            else {
+                max = irrC;
+            }
+        } while(Math.abs(NPVt) > 0.000001);
+        return irrC * 100;
+    }
+    // vysledok pomocnej funkcie
+    irr = IRRCalc();
+
+    // ZAOKRUHLENIE
+    cudzieZdroje = Math.round((cudzieZdroje + Number.EPSILON) * 100) / 100;
+    inv = Math.round((inv + Number.EPSILON) * 100) / 100;
+    roi = Math.round((roi + Number.EPSILON) * 10000) / 100;
+    roe = Math.round((roe + Number.EPSILON) * 10000) / 100;
+    dn = Math.round((dn + Number.EPSILON) * 100) / 100;
+    npv = Math.round((npv + Number.EPSILON) * 100) / 100;
+    irr = Math.round((irr + Number.EPSILON) * 100) / 100;
+
+    // ZOBRAZENIE
+    document.getElementById("pozemok").innerHTML = "pozemok: " + result.toLocaleString() + "€";
+    document.getElementById("cudzieZdroje").innerHTML = "Cudzie zdroje: " + cudzieZdroje.toLocaleString() + "€";
+    document.getElementById("investicia").innerHTML = "Investicia: " + inv.toLocaleString() + "€";
+    document.getElementById("roi").innerHTML = "ROI: " + roi + "%";
+    document.getElementById("roe").innerHTML = "ROE: " + roe + "%";
+    document.getElementById("dobaNavratnosti").innerHTML = "Doba navratnosti: " + dn;
+    document.getElementById("npv").innerHTML = "NPV: " + npv.toLocaleString() + "€";
+    document.getElementById("irr").innerHTML = "IRR: " + irr + "%";
+}

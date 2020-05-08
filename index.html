@@ -28,19 +28,19 @@
         <input type="button" onclick="kalkulacia()" value="calculate">
     </form>
 
-    <p id="naklady"></p>
-    <p id="pViladomov"></p>
-    <p id="pParkMiest"></p>
-    <p id="cnpNaLokalitu"></p>
-    <p id="vynosy"></p>
-    <p id="hz"></p>
-    <p id="cz"></p>
+    <p>naklady na pozemok su: <span id="naklady"></span></p>
+    <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span></p>
+    <p>pocet parkovacich miest: <span id="pParkMiest"></span></p>
+    <p>celkove naklady projektu v danej lokalite: <span id="cnpNaLokalitu"></span></p>
+    <p>celkove vynosy projektu: <span id="vynosy"></span></p>
+    <p>hruby zisk: <span id="hz"></span></p>
+    <p>cisty zisk: <span id="cz"></span></p>
 
 
     <p>struktura financovania a vsetky dolezite financne ukazovatele</p>
     <form id="form1" action="index.html">
         <input type="email" name="user-email" id="mail" placeholder="Zadajte vas email" required><br>
-        <input type="button" onclick="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
+        <input type="submit" onsubmit="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
     </form>
 
     <p id="pozemok"></p>
@@ -341,13 +341,13 @@
             resultCZ = Math.round((resultCZ + Number.EPSILON) * 100) / 100;
 
             // vypisanie vysledkov
-            document.getElementById("naklady").innerHTML = "naklady na pozemok su: " + result.toLocaleString() + "€";
-            document.getElementById("pViladomov").innerHTML = "pocet viladomov na pozemku bude: " + resultPVNP;
-            document.getElementById("pParkMiest").innerHTML = "pocet parkovacich miest: " + resultPPM;
-            document.getElementById("cnpNaLokalitu").innerHTML = "celkove naklady projektu v danej lokalite: " + resultCNPDL.toLocaleString() + "€";
-            document.getElementById("vynosy").innerHTML = "celkove vynosy projektu: " + resultCVP.toLocaleString() + "€";
-            document.getElementById("hz").innerHTML = "hruby zisk: " + resultHZ.toLocaleString() + "€";
-            document.getElementById("cz").innerHTML = "cisty zisk: " + resultCZ.toLocaleString() + "€";
+            document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
+            document.getElementById("pViladomov").innerHTML = resultPVNP;
+            document.getElementById("pParkMiest").innerHTML = resultPPM;
+            document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
+            document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
+            document.getElementById("hz").innerHTML = resultHZ.toLocaleString() + "€";
+            document.getElementById("cz").innerHTML = resultCZ.toLocaleString() + "€";
         }
 
         // UDAJE ZOBRAZENE PO ZADANI MAILU -----------------------------------------------
