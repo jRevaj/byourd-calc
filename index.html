@@ -28,7 +28,7 @@
         <input type="button" onclick="kalkulacia()" value="calculate">
     </form>
 
-    <p>naklady na pozemok su: <span id="naklady"></span></p>
+    <p>naklady na pozemok su: <div class="tooltip"><span id="naklady"></span></div></p>
     <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span></p>
     <p>pocet parkovacich miest: <span id="pParkMiest"></span></p>
     <p>celkove naklady projektu v danej lokalite: <span id="cnpNaLokalitu"></span></p>
@@ -38,9 +38,9 @@
 
 
     <p>struktura financovania a vsetky dolezite financne ukazovatele</p>
-    <form id="form1" action="index.html">
-        <input type="email" name="user-email" id="mail" placeholder="Zadajte vas email" required><br>
-        <input type="submit" onsubmit="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
+    <form id="form1" action="">
+        <input type="email" name="user-email" id="mail" placeholder="Zadajte vas email"><br>
+        <input type="button" onclick="kalkulaciaPoZadaniMailu()" value="chcem vediet viac!">
     </form>
 
     <p id="pozemok"></p>
