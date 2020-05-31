@@ -7,6 +7,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Byourd Investment Calculator</title>
     <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +50,7 @@
         <input type="button" onclick="kalkulacia()" value="calculate">
     </form>
 
-    <p>naklady na pozemok su: <div class="tooltip"><span id="naklady"></span></div></p>
+    <p>naklady na pozemok su: <div class="tooltip"><span class="tooltiptext">Tooltip text</span><span id="naklady"></span></div></p>
     <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span></p>
     <p>pocet parkovacich miest: <span id="pParkMiest"></span></p>
     <p>celkove naklady projektu v danej lokalite: <span id="cnpNaLokalitu"></span></p>
