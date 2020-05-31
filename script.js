@@ -262,6 +262,13 @@ function kalkulacia() {
     // pocet vila domov
     resultPVNP = currentVal / rjd;
     resultPVNP = Math.floor(resultPVNP);
+    if (resultPVNP > 24) {
+        document.getElementById("pViladomov").innerHTML = "24";
+        document.getElementById("pvmax").innerHTML = "Maximálny počet viladomov na pozemku je 24.<br>Zvyšok pozemku sa použije na ďalší produkt od ByourD.";
+    } else {
+        document.getElementById("pViladomov").innerHTML = resultPVNP;
+    }
+
 
     // pocet parkovacich miest
     resultPPM = resultPVNP * 18;
@@ -288,8 +295,8 @@ function kalkulacia() {
 
     // vypisanie vysledkov
     document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
-    document.getElementById("pViladomov").innerHTML = resultPVNP;
-    document.getElementById("pParkMiest").innerHTML = resultPPM;
+    //document.getElementById("pViladomov").innerHTML = resultPVNP;
+    //document.getElementById("pParkMiest").innerHTML = resultPPM;
     document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
     document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
     document.getElementById("hz").innerHTML = resultHZ.toLocaleString() + "€";
@@ -389,12 +396,14 @@ function kalkulaciaPoZadaniMailu() {
     irr = Math.round((irr + Number.EPSILON) * 100) / 100;
 
     // ZOBRAZENIE
-    document.getElementById("pozemok").innerHTML = "pozemok: " + result.toLocaleString() + "€";
-    document.getElementById("cudzieZdroje").innerHTML = "Cudzie zdroje: " + cudzieZdroje.toLocaleString() + "€";
-    document.getElementById("investicia").innerHTML = "Investicia: " + inv.toLocaleString() + "€";
-    document.getElementById("roi").innerHTML = "ROI: " + roi + "%";
-    document.getElementById("roe").innerHTML = "ROE: " + roe + "%";
-    document.getElementById("dobaNavratnosti").innerHTML = "Doba navratnosti: " + dn;
-    document.getElementById("npv").innerHTML = "NPV: " + npv.toLocaleString() + "€";
-    document.getElementById("irr").innerHTML = "IRR: " + irr + "%";
+    document.getElementById("zobraz").style.display="block";
+
+    document.getElementById("pozemok").innerHTML = result.toLocaleString() + "€";
+    document.getElementById("cudzieZdroje").innerHTML = cudzieZdroje.toLocaleString() + "€";
+    document.getElementById("investicia").innerHTML = inv.toLocaleString() + "€";
+    document.getElementById("roi").innerHTML = roi + "%";
+    document.getElementById("roe").innerHTML = roe + "%";
+    document.getElementById("dobaNavratnosti").innerHTML = dn;
+    document.getElementById("npv").innerHTML = npv.toLocaleString() + "€";
+    document.getElementById("irr").innerHTML = irr + "%";
 }

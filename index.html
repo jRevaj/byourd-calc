@@ -9,24 +9,24 @@
     <style>
         .tooltip {
             position: relative;
-            display: inline-block;
+            opacity: 1;
+            padding: 0;
         }
-
         .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 20rem;
-            background-color: black;
-            color: #fff;
+            display: none;
+            width: 50rem;
+            background-color: rgb(55, 74, 88);
+            color: rgb(227, 231, 234);
             text-align: center;
+            font-size: 1.6rem;
             border-radius: .6rem;
             padding: 1rem;
             position: absolute;
             z-index: 1;
             top: 150%;
             left: 50%;
-            margin-left: -60px;
+            margin-left: -25rem;
         }
-
         .tooltip .tooltiptext::after {
             content: "";
             position: absolute;
@@ -35,44 +35,37 @@
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: transparent transparent black transparent;
+            border-color: transparent transparent rgb(55, 74, 88) transparent;
         }
-
         .tooltip:hover .tooltiptext {
-            visibility: visible;
-        }
-        .p {
-            display: inline-block;
-            margin: 0;
+            display: block;
         }
     </style>
 </head>
 <body>
     <form id="form" action="index.html">
-        <p>Minimalna rozloha pozemku bez polyfunkcie je 23000m2</p>
-        <label for="rp">Zadajte rozlohu pozemku v m2</label>
-        <input type="number" name="rozloha-pozemku" id="rp" min="23000" required oninvalid="alert('Musite vyplnit')"><br><br>
-        <label for="stat">Vyberte stat</label>
-        <select onchange="changeLocationList()" id="stat">
-            <option value="" selected disabled>Vyber stat</option>
+        <label for="rp" class="rplabel"></label>
+        <input type="number" name="rozloha-pozemku" id="rp" class="rp" min="23000" step="100" required placeholder="Rozloha pozemku v m²" ><br><br>
+        <label for="stat"></label>
+        <select onchange="changeLocationList()" id="stat" class="selct">
+            <option value="" selected disabled>Vyber štát</option>
             <option value="svk">Slovensko</option>
             <option value="cz">Ceska Republika</option>
             <!-- <option value="at">Rakusko</option> -->
         </select><br><br>
-        <label for="lp">Zadajte lokalitu kde sa pozemok nachádza</label>
-        <select id="lp">
+        <label for="lp"></label>
+        <select id="lp" class="selct">
             <option value="" selected disabled>Vyber lokalitu </option>
         </select><br><br>
-        <input type="button" onclick="kalkulacia()" value="calculate">
+        <input type="button" onclick="kalkulacia()" value="Vypočítaj" class="btn">
     </form>
 
-    <p class="p">naklady na pozemok su: <div class="tooltip"><span class="tooltiptext">* Naklady na pozemok su vypocitane na základe priemernej ceny za m2 v danej lokalite uvadzane na portaloch nehnutelnosti.sk a reality.idnes.cz ku dnu 22.3.2020</span><span id="naklady"></span></div></p>
-    <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span><span id="pvmax"></span></p>
-    <p>pocet parkovacich miest: <span id="pParkMiest"></span></p>
-    <p>celkove naklady projektu v danej lokalite: <span id="cnpNaLokalitu"></span></p>
-    <p>celkove vynosy projektu: <span id="vynosy"></span></p>
-    <p>hruby zisk: <span id="hz"></span></p>
-    <p>cisty zisk: <span id="cz"></span></p>
+    <p>Náklady na pozemok: <span class="tooltip"><span class="tooltiptext">* Náklady na pozemok sú vypočítané na základe priemernej ceny za m2 v danej lokalite uvádzané na portáloch nehnutelnosti.sk a reality.idnes.cz ku dňu 22.3.2020</span><span class="res" id="naklady"></span></span></p>
+    <p>Počet viladomov na pozemku bude: <span class="res" id="pViladomov"></span><span class="res" id="pvmax"></span></p>
+    <p>Celkové náklady projektu v danej lokalite: <span class="res" id="cnpNaLokalitu"></span></p>
+    <p>Celkové výnosy projektu: <span class="tooltip"><span class="tooltiptext">* Priemerné predajné ceny sú vypočítané na základe priemernej ceny za m2 v danej lokalite uvádzané na portáloch nehnutelnosti.sk a reality.idnes.cz ku dňu 22.3.2020.</span><span class="res" id="vynosy"></span></span></p>
+    <p>Hrubý zisk: <span class="res" id="hz"></span></p>
+    <p>Čistý zisk: <span class="res" id="cz"></span></p>
 
 
     <p>struktura financovania a vsetky dolezite financne ukazovatele</p>
@@ -354,12 +347,13 @@
             // pocet vila domov
             resultPVNP = currentVal / rjd;
             resultPVNP = Math.floor(resultPVNP);
-            if (resultPVNP >= 24) {
+            if (resultPVNP > 24) {
                 document.getElementById("pViladomov").innerHTML = "24";
-                document.getElementById("pvmax").innerHTML = "<br>Maximálny počet viladomov na pozemku je 24.<br>Zvyšok pozemku sa použije na ďalší produkt od ByourD";
+                document.getElementById("pvmax").innerHTML = "Maximálny počet viladomov na pozemku je 24.<br>Zvyšok pozemku sa použije na ďalší produkt od ByourD.";
             } else {
                 document.getElementById("pViladomov").innerHTML = resultPVNP;
             }
+
 
             // pocet parkovacich miest
             resultPPM = resultPVNP * 18;
@@ -386,7 +380,8 @@
 
             // vypisanie vysledkov
             document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
-            document.getElementById("pParkMiest").innerHTML = resultPPM;
+            //document.getElementById("pViladomov").innerHTML = resultPVNP;
+            //document.getElementById("pParkMiest").innerHTML = resultPPM;
             document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
             document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
             document.getElementById("hz").innerHTML = resultHZ.toLocaleString() + "€";
@@ -486,14 +481,16 @@
             irr = Math.round((irr + Number.EPSILON) * 100) / 100;
 
             // ZOBRAZENIE
-            document.getElementById("pozemok").innerHTML = "pozemok: " + result.toLocaleString() + "€";
-            document.getElementById("cudzieZdroje").innerHTML = "Cudzie zdroje: " + cudzieZdroje.toLocaleString() + "€";
-            document.getElementById("investicia").innerHTML = "Investicia: " + inv.toLocaleString() + "€";
-            document.getElementById("roi").innerHTML = "ROI: " + roi + "%";
-            document.getElementById("roe").innerHTML = "ROE: " + roe + "%";
-            document.getElementById("dobaNavratnosti").innerHTML = "Doba navratnosti: " + dn;
-            document.getElementById("npv").innerHTML = "NPV: " + npv.toLocaleString() + "€";
-            document.getElementById("irr").innerHTML = "IRR: " + irr + "%";
+            document.getElementById("zobraz").style.display="block";
+
+            document.getElementById("pozemok").innerHTML = result.toLocaleString() + "€";
+            document.getElementById("cudzieZdroje").innerHTML = cudzieZdroje.toLocaleString() + "€";
+            document.getElementById("investicia").innerHTML = inv.toLocaleString() + "€";
+            document.getElementById("roi").innerHTML = roi + "%";
+            document.getElementById("roe").innerHTML = roe + "%";
+            document.getElementById("dobaNavratnosti").innerHTML = dn;
+            document.getElementById("npv").innerHTML = npv.toLocaleString() + "€";
+            document.getElementById("irr").innerHTML = irr + "%";
         }
     </script>
 </body>
