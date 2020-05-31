@@ -14,20 +14,36 @@
 
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 120px;
+            width: 20rem;
             background-color: black;
             color: #fff;
             text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-
-            /* Position the tooltip */
+            border-radius: .6rem;
+            padding: 1rem;
             position: absolute;
             z-index: 1;
+            top: 150%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent black transparent;
         }
 
         .tooltip:hover .tooltiptext {
             visibility: visible;
+        }
+        .p {
+            display: inline-block;
+            margin: 0;
         }
     </style>
 </head>
@@ -50,8 +66,8 @@
         <input type="button" onclick="kalkulacia()" value="calculate">
     </form>
 
-    <p>naklady na pozemok su: <div class="tooltip"><span class="tooltiptext">Tooltip text</span><span id="naklady"></span></div></p>
-    <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span></p>
+    <p class="p">naklady na pozemok su: <div class="tooltip"><span class="tooltiptext">* Naklady na pozemok su vypocitane na základe priemernej ceny za m2 v danej lokalite uvadzane na portaloch nehnutelnosti.sk a reality.idnes.cz ku dnu 22.3.2020</span><span id="naklady"></span></div></p>
+    <p>pocet viladomov na pozemku bude: <span id="pViladomov"></span><span id="pvmax"></span></p>
     <p>pocet parkovacich miest: <span id="pParkMiest"></span></p>
     <p>celkove naklady projektu v danej lokalite: <span id="cnpNaLokalitu"></span></p>
     <p>celkove vynosy projektu: <span id="vynosy"></span></p>
@@ -338,6 +354,12 @@
             // pocet vila domov
             resultPVNP = currentVal / rjd;
             resultPVNP = Math.floor(resultPVNP);
+            if (resultPVNP >= 24) {
+                document.getElementById("pViladomov").innerHTML = "24";
+                document.getElementById("pvmax").innerHTML = "<br>Maximálny počet viladomov na pozemku je 24.<br>Zvyšok pozemku sa použije na ďalší produkt od ByourD";
+            } else {
+                document.getElementById("pViladomov").innerHTML = resultPVNP;
+            }
 
             // pocet parkovacich miest
             resultPPM = resultPVNP * 18;
@@ -364,7 +386,6 @@
 
             // vypisanie vysledkov
             document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
-            document.getElementById("pViladomov").innerHTML = resultPVNP;
             document.getElementById("pParkMiest").innerHTML = resultPPM;
             document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
             document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
