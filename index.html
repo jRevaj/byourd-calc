@@ -76,6 +76,7 @@
 
     <p id="pozemok"></p>
     <p id="investicia"></p>
+    <p id="rev"></p>
     <p id="cudzieZdroje"></p>
     <p id="roi"></p>
     <p id="roe"></p>
@@ -91,13 +92,13 @@
                 id: '0',
                 name: 'Bratislava',
                 avgprice: 2399.99,
-                plotprice: 144,
+                plotprice: 150,
             },
             {
                 id: '1',
                 name: 'Trnava',
                 avgprice: 1739.20,
-                plotprice: 64,
+                plotprice: 70,
             },
             {
                 id: '2',
@@ -109,7 +110,7 @@
                 id: '3',
                 name: 'Kosice',
                 avgprice: 1634.74,
-                plotprice: 112,
+                plotprice: 120,
             },
             {
                 id: '4',
@@ -127,13 +128,13 @@
                 id: '6',
                 name: 'Presov',
                 avgprice: 1356.80,
-                plotprice: 44.80,
+                plotprice: 28,
             },
             {
                 id: '7',
                 name: 'Vysoke Tatry',
                 avgprice: 1584,
-                plotprice: 52,
+                plotprice: 65,
             },
             {
                 id: '8',
@@ -145,32 +146,32 @@
                 id: '9',
                 name: 'Banska Bystrica',
                 avgprice: 1720,
-                plotprice: 68,
+                plotprice: 39,
             },
             {
                 id: '10',
                 name: 'Zvolen',
                 avgprice: 1584,
-                plotprice: 60,
+                plotprice: 35,
             },
             {
                 id: '11',
                 name: 'Zilina',
                 avgprice: 1550.94,
-                plotprice: 81.60,
+                plotprice: 31.23,
             },
             {
                 id: '12',
                 name: 'Liptovsky Mikulas',
                 avgprice: 1468.97,
-                plotprice: 69.60,
+                plotprice: 55,
             }]
         db['cz'] = [
             {
                 id: '0',
                 name: 'Karlove Vary',
                 avgprice: 1381.7818,
-                plotprice: 59.20,
+                plotprice: 48.10,
             },
             {
                 id: '1',
@@ -218,13 +219,13 @@
                 id: '8',
                 name: 'Ceske Budejovice',
                 avgprice: 1357.1071,
-                plotprice: 47.36,
+                plotprice: 32.56,
             },
             {
                 id: '9',
                 name: 'Jihlava',
                 avgprice: 1433.3942,
-                plotprice: 35,
+                plotprice: 29,
             },
             {
                 id: '10',
@@ -260,7 +261,7 @@
                 id: '15',
                 name: 'Olomouc',
                 avgprice: 1469.2142,
-                plotprice: 70.15,
+                plotprice: 64.31,
             },
             {
                 id: '16',
@@ -289,7 +290,7 @@
         let rp, currentVal;
         let stateList, locationList, selState;
         let selOpt, plot, result, resultPVNP, resultCVP, resultPPM, resultCNPDL, resultHZ, resultCZ;
-        let inv, cudzieZdroje, roi, roe, dn, npv, irr;
+        let inv, rv, cudzieZdroje, roi, roe, dn, npv, irr;
 
         // pomocné premenné pre pomocné výpočty
         let kv1, kv2, kv3, kv4;
@@ -379,11 +380,11 @@
             resultCZ = Math.round((resultCZ + Number.EPSILON) * 100) / 100;
 
             // vypisanie vysledkov
-            document.getElementById("naklady").innerHTML = result.toLocaleString() + "€";
+            document.getElementById("naklady").innerHTML = result.toLocaleString() + "€*";
             //document.getElementById("pViladomov").innerHTML = resultPVNP;
             //document.getElementById("pParkMiest").innerHTML = resultPPM;
             document.getElementById("cnpNaLokalitu").innerHTML = resultCNPDL.toLocaleString() + "€";
-            document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€";
+            document.getElementById("vynosy").innerHTML = resultCVP.toLocaleString() + "€*";
             document.getElementById("hz").innerHTML = resultHZ.toLocaleString() + "€";
             document.getElementById("cz").innerHTML = resultCZ.toLocaleString() + "€";
         }
@@ -427,15 +428,17 @@
 
 
             // INVESTICIA
-            inv = resultCNPDL - cudzieZdroje - result;
+            inv = (resultCNPDL - cudzieZdroje - result) * 0.55;
 
+            // REINVESTOVANIE VYNOSOV
+            rv = (resultCNPDL - cudzieZdroje - result) * 0.45;
 
             // ROI
             roi = resultCZ / (result + inv + cudzieZdroje);
 
 
             // ROE
-            roe = resultCZ / (result + inv);
+            roe = (resultCZ - result - inv) / (result + inv);
 
 
             // DOBA NAVRATNOSTI
@@ -474,6 +477,7 @@
             // ZAOKRUHLENIE
             cudzieZdroje = Math.round((cudzieZdroje + Number.EPSILON) * 100) / 100;
             inv = Math.round((inv + Number.EPSILON) * 100) / 100;
+            rv = Math.round((rv + Number.EPSILON) * 100) / 100;
             roi = Math.round((roi + Number.EPSILON) * 10000) / 100;
             roe = Math.round((roe + Number.EPSILON) * 10000) / 100;
             dn = Math.round((dn + Number.EPSILON) * 100) / 100;
@@ -481,11 +485,10 @@
             irr = Math.round((irr + Number.EPSILON) * 100) / 100;
 
             // ZOBRAZENIE
-            document.getElementById("zobraz").style.display="block";
-
             document.getElementById("pozemok").innerHTML = result.toLocaleString() + "€";
             document.getElementById("cudzieZdroje").innerHTML = cudzieZdroje.toLocaleString() + "€";
             document.getElementById("investicia").innerHTML = inv.toLocaleString() + "€";
+            document.getElementById("rev").innerHTML = rv.toLocaleString() + "€";
             document.getElementById("roi").innerHTML = roi + "%";
             document.getElementById("roe").innerHTML = roe + "%";
             document.getElementById("dobaNavratnosti").innerHTML = dn;
